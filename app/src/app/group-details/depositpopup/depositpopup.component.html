@@ -1,0 +1,13 @@
+<mat-card>
+    <div class="text-center">
+        <span class="name-icon {{ member['user'].name | slice : 0 :1  }}-icon">{{ member['user'].name | slice : 0 :1  }}</span>
+        <h4>{{member['user'].name}}</h4>
+        <mat-form-field class="text-full-width">
+            <input type="number" matInput placeholder="Deposit Amount" value="" [(ngModel)]="depositAmount">
+        </mat-form-field>
+    </div>
+    <mat-card-actions style="text-align: center;">
+        <button mat-raised-button color="primary"  (click)="save()" >Save</button>
+        <button mat-raised-button color="warn"  (click)="close()">Cancel</button>
+    </mat-card-actions>
+</mat-card>

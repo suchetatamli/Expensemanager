@@ -1,0 +1,41 @@
+.mat-card {
+    margin: 0 15px 15px;
+    background-color: #eee;
+}
+.mat-form-field {
+    width: 100%;
+}
+.mat-flat-button {
+    margin: 0 13px;
+    width: 98%;
+}
+.admin-span {
+    background: #3f51b5;
+    color: #fff;
+    padding: 3px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+.title-heading {
+    width: 85%;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: -1%;
+}
+.text-right {
+    text-align: right;
+}
+.table {
+	width: 100%;
+}
+table.table tr td {
+	border-bottom: 1px solid #CCC; 
+	line-height: 25px;
+}
+table.table tr:last-of-type td {
+	border-bottom: none; 
+}
+.table div {
+    line-height: 25px;
+}

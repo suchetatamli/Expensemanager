@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row  *ngIf="userDetails.name">
+        <span>Welcome, {{ userDetails.name }}</span>
+        <span class="example-spacer"></span>
+        <!-- <button mat-button [matMenuTriggerFor]="menu">{{ userDetails.name }}</button> -->
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <a mat-menu-item routerLink="/home">Dashboard</a>
+            <a mat-menu-item routerLink="/creategroup">Create New Expense Group</a>
+            <a mat-menu-item (click)="doLogout()">Logout</a>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+<router-outlet></router-outlet>

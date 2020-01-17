@@ -1,0 +1,107 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; font-size: 12px; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.table {
+	width: 100%;
+}
+table.table tr td {
+	border-bottom: 1px solid #CCC; 
+	line-height: 25px;
+}
+table.table tr:last-of-type td {
+	border-bottom: none; 
+}
+.table div {
+    line-height: 25px;
+}
+.bottom-container {
+    margin: 0 10px;
+}
+.error {
+	font-style: normal;
+	color: red;
+	font-size: 12px;
+}
+.admin-span {
+    background: #3f51b5;
+    color: #FFF;
+    padding: 3px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+span.name-icon {
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background: #3f51b5;
+    color: #FFF;
+    font-weight: bold;
+    display: inline-block;
+}
+span.name-icon.A-icon { background: #e48018 }
+span.name-icon.B-icon { background: #116c75 }
+span.name-icon.C-icon { background: #8a36b5 }
+span.name-icon.D-icon { background: #cc1c85 }
+span.name-icon.E-icon { background: #ff0d0d }
+span.name-icon.F-icon { background: #060f82 }
+span.name-icon.G-icon { background: #6db399 }
+span.name-icon.H-icon { background: #aba739 }
+span.name-icon.I-icon { background: #da875f }
+span.name-icon.J-icon { background: #226760 }
+span.name-icon.K-icon { background: #000000 }
+span.name-icon.L-icon { background: #d48e8e }
+span.name-icon.M-icon { background: #b4b2da }
+span.name-icon.N-icon { background: #ac29b5 }
+span.name-icon.O-icon { background: #09631c }
+span.name-icon.P-icon { background: #86af6d }
+span.name-icon.Q-icon { background: #a25fa0 }
+span.name-icon.R-icon { background: #a51141 }
+span.name-icon.S-icon { background: #3b747d }
+span.name-icon.T-icon { background: #209239 }
+span.name-icon.U-icon { background: #b19612 }
+span.name-icon.V-icon { background: #15d4ff }
+span.name-icon.W-icon { background: #978aad }
+span.name-icon.X-icon { background: #ab041b }
+span.name-icon.Y-icon { background: #9db76b }
+span.name-icon.Z-icon { background: #b53f4a }
+
+.menu-link{
+    text-decoration: none;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 25px;
+}
+.menu-link::after {
+    content: '\2807';
+}
+.table .menu-link {
+    font-size: 12px;
+    color: #222;
+}
+.red-text{
+    color: #e05959;
+}
+.green-text {
+    color: #47af33;
+}
+.text-center {
+	text-align: center;
+}
+.clearfix {
+    clear: both;
+}
+.left-float{
+    float: left;
+}
+.right-float{
+    float: right;
+}
+.mat-menu-item{
+    font-size: 12px !important;
+    line-height: 25px !important;
+    height: 25px !important;
+}

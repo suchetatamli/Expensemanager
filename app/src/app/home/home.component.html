@@ -1,0 +1,24 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row  *ngIf="userDetails.name">
+        <span>Welcome, {{ userDetails.name }}</span>
+        <span class="example-spacer"></span>
+        <!-- <button mat-button [matMenuTriggerFor]="menu">{{ userDetails.name }}</button> -->
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <a mat-menu-item routerLink="/creategroup">Create New Expense Group</a>
+            <a mat-menu-item (click)="doLogout()">Logout</a>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="sub-group-content" *ngFor="let i of groups">
+    <mat-card>
+        <mat-card-content>
+            <h4>{{ i.group_name }}</h4>
+            <p>Total : &#8377; {{ i.total | number : '1.2' }}</p>
+            <p *ngIf="i.start_date">Start :  {{ i.start_date | date }}</p>
+            <a mat-flat-button color="primary" routerLink="/group-details/{{i.id}}" >Go Center</a>
+        </mat-card-content>
+    </mat-card>
+</div>

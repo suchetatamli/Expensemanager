@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <a routerLink="/home" mat-mini-fab color="primary">&#10094;</a><span style="margin-left: 10px;">Create Group</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Group Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field>
+            <input matInput placeholder="Name" [(ngModel)]="group.name">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="group.startdate" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>
+<mat-card>
+    <mat-card-header>
+        <span class="title-heading">Group Members</span>
+        <span><button mat-icon-button color="primary" (click)="openDialog()">&#10010;</button></span>
+    </mat-card-header>
+    <mat-card-content>
+        <table class="table" cellpadding="0" cellspacing="0">
+            <tr *ngFor="let i of group.members; let index = index">
+                <td> <span (click)="setAdmin(index)">{{ i.name }}</span> <span class="admin-span" *ngIf="i.admin==1">Admin</span></td>
+                <td class="text-right"><button mat-icon-button color="warn" (click)="removeItem(index)" *ngIf="i.admin==0">&#10006;</button></td>
+            </tr>
+        </table>
+    </mat-card-content>
+</mat-card>
+<button mat-flat-button color="primary" (click)="createGroup()">Create Group</button>

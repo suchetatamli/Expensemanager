@@ -1,0 +1,22 @@
+<mat-card  class="item-add-mat-card">
+	<mat-card-header>
+		<mat-card-title><strong>Add Member</strong></mat-card-title>
+	</mat-card-header>
+	<mat-form-field class="text-full-width">
+		<!-- <input type="hidden" [(ngModel)]="member.id" >
+		<input type="hidden" [(ngModel)]="member.name" > -->
+	    <input type="text" placeholder="search member" aria-label="Number" matInput [formControl]="searchTerm" [matAutocomplete]="auto">
+	    <mat-autocomplete #auto="matAutocomplete">
+	      	<mat-option (click)="selectUser(item.id)" *ngFor="let item of searchResult" [value]="item.name">
+	        	{{ item.name }}
+	      	</mat-option>
+	    </mat-autocomplete>
+    </mat-form-field>
+	<mat-form-field class="text-full-width">
+	    <input matInput placeholder="Deposit Amount(Optional)" value="" [(ngModel)]="member.deposit">
+	</mat-form-field>
+	<mat-card-actions style="text-align: right;">
+		<button mat-raised-button color="primary"  (click)="save()" >Add</button>
+		<button mat-raised-button color="warn"  (click)="close()">Cancel</button>
+	</mat-card-actions>
+</mat-card>

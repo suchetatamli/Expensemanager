@@ -1,0 +1,32 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <a routerLink="/group-details/{{groupId}}" mat-mini-fab color="primary">&#10094;</a><span style="margin-left: 10px;">{{groupDetails['group_name']}}</span>
+        <span class="example-spacer"></span>
+        <strong>Total : </strong>  &#8377; {{groupDetails['totalPay']}}
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-card>
+    <mat-card-content *ngFor="let pay of groupDetails['pay']">
+        <div class="mat-header">
+            <div class="right-float"><a  class="menu-link" [matMenuTriggerFor]="menu"></a>
+            <mat-menu #menu="matMenu" class="table-menu">
+                <a mat-menu-item>Edit</a>
+                <a mat-menu-item>Delete</a>
+            </mat-menu></div>
+            <div class="left-float" style="margin-top: 6px;"><strong>{{pay.description}}</strong></div>
+            <div class="clearfix"></div>
+        </div>
+        <p><strong>Category : </strong>{{ pay.category }}</p>
+        <p><strong>Paid By : </strong> {{ pay.paymentUser.name }}</p>
+        <p><strong>Added By : </strong> {{ pay.addedUser.name }}</p>
+        
+        <p><strong>Amount :</strong> &#8377; {{ pay.amount | number : '1.2' }}</p>
+        <p><strong>Date : </strong>{{ pay.paydate | date }}</p>
+        <p><strong>Share With : </strong>
+            <span *ngFor="let shareUser of pay.shareUsers">
+                {{ shareUser.userName.name }}
+            </span>
+        </p>
+    </mat-card-content>
+</mat-card>

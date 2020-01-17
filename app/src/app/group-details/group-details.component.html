@@ -1,0 +1,73 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <a routerLink="/home" mat-mini-fab color="primary">&#10094;</a><span style="margin-left: 10px;">{{groupDetails['group_name']}}</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <a mat-menu-item (click)="openAddMemberDialog()">Add Member</a>
+            <a mat-menu-item>Export</a>
+            <a mat-menu-item (click)="openDeleteDialog()" *ngIf="adminUser && (adminUser['user_id'] == authUser.id)">Delete Group</a>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="bottom-container">
+	<br/>
+	<mat-card>
+        <mat-card-content>
+		    <table class="table" cellspacing="0">
+                <tr>
+                    <td *ngIf="createdUser">
+                        <strong>Created By :</strong> <label> {{ createdUser.user.name }}</label>
+                    </td>
+                    <td *ngIf="adminUser">
+                        <strong>Admin User :</strong> <label> {{ adminUser.user.name }}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td *ngIf="groupDetails['start_date']">
+                        <strong>Started On :</strong> <label> {{ groupDetails['start_date'] | date }}</label>
+                    </td>
+                    <td *ngIf="groupDetails['created_at']">
+                        <strong>Created On :</strong> <label> {{ groupDetails['created_at'] | date }}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Total :</strong> <label> &#8377; {{ groupDetails['totalAmount'] | number : '1.2' }}</label>
+                    </td>
+                    <td align="center">
+                        <a mat-button routerLink="/expense-history/{{groupDetails['id']}}"><strong>&#10093;</strong></a>
+                    </td>
+                </tr>
+            </table>
+        </mat-card-content>
+	</mat-card>
+    
+    <br/>
+	<mat-card>
+        <mat-card-content>
+            <table class="table" cellspacing="0">
+                <tr *ngFor="let i of groupDetails['members'];">
+                    <td><span class="name-icon {{i.user.name | slice : 0 :1 }}-icon">{{i.user.name | slice : 0 :1 }}</span></td>
+                    <td>{{i.user.name}} <span class="admin-span" *ngIf="i.admin==1">Admin</span></td>
+                    <td>
+                        <div><label>Deposit : </label> &#8377; {{i.deposit | number : '1.2'}}</div>
+                        <div><label>Pay : </label> &#8377; {{i.pay | number : '1.2'}}</div>
+                        <div><label>Pay Share: </label> &#8377; {{i.pay_share | number : '1.2'}}</div>
+                        <div><label>Balance : </label><span [ngClass]="{ 'red-text':i.balance < 0 ,'green-text': i.balance > 0 }">&#8377; {{i.balance | number : '1.2'}}</span></div>
+                    </td>
+                    <td>
+                        <a mat-icon-button class="menu-link" [matMenuTriggerFor]="sidemenu"></a>
+                        <mat-menu #sidemenu="matMenu">
+                            <a mat-menu-item *ngIf="i.admin !=1 && authUser.id == adminUser.user_id" (click)="openDepositPopup(i, groupDetails)">Deposit</a>
+                            <a mat-menu-item routerLink="/pay/{{groupDetails['id']}}/{{i.user_id}}">Pay</a>
+                            <a mat-menu-item *ngIf="adminUser && (adminUser['user_id'] == authUser.id)" (click)="deleteUser(i.user_id)">Delete</a>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </table>
+        </mat-card-content>
+	</mat-card>
+</div>
