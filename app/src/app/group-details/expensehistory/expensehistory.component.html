@@ -2,7 +2,7 @@
     <mat-toolbar-row>
         <a routerLink="/group-details/{{groupId}}" mat-mini-fab color="primary">&#10094;</a><span style="margin-left: 10px;">{{groupDetails['group_name']}}</span>
         <span class="example-spacer"></span>
-        <strong>Total : </strong>  &#8377; {{groupDetails['totalPay']}}
+        <strong>Total : </strong>  &#8377; {{groupDetails['totalPay'] | number : '1.2'}}
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -25,7 +25,7 @@
         <p><strong>Date : </strong>{{ pay.paydate | date }}</p>
         <p><strong>Share With : </strong>
             <span *ngFor="let shareUser of pay.shareUsers">
-                {{ shareUser.userName.name }}
+                {{ shareUser.userName.name }} <span>,</span>
             </span>
         </p>
     </mat-card-content>
