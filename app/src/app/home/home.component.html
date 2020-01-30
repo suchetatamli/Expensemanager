@@ -17,8 +17,8 @@
         <mat-card-content>
             <h4>{{ i.group_name }}</h4>
             <p>Total : &#8377; {{ i.total | number : '1.2' }}</p>
-            <p *ngIf="i.start_date">Start :  {{ i.start_date | date }}</p>
-            <a mat-flat-button color="primary" routerLink="/group-details/{{i.id}}" >Go Center</a>
+            <p *ngIf="i.start_date">Start :  {{ i.start_date | date }}</p> 
+            <a mat-flat-button color="primary" routerLink="/group-details/{{i.id}}" >Go Center</a> 
         </mat-card-content>
     </mat-card>
 </div>

@@ -17,8 +17,8 @@ export class CommonService {
     return this.http.post(global.API_URL + '/create-group', postData);
   }
   /* group list */
-  groupList(){
-    return this.http.get(global.API_URL + '/group-list');
+  groupList(userId){
+    return this.http.get(global.API_URL + '/group-list/' + userId);
   }
   /* group detail */
   groupDetails(id) {
@@ -48,5 +48,12 @@ export class CommonService {
   expenseHistory(groupId){
     return this.http.get(global.API_URL + '/expense-history/' + groupId);
   }
-  
+  /* delete group expense */
+  deleteGroupExpense(paymentId){
+    return this.http.get(global.API_URL + '/delete-group-expense/' + paymentId);
+  }
+  /* edit expense */
+  editGroupExpense(postData, paymentId){
+    return this.http.post(global.API_URL + '/update-payment/' + paymentId, postData)
+  }
 }

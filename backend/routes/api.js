@@ -20,7 +20,7 @@ router.group('/api', function (router){
     router.post('/logout', authMiddleware.sessionExpire);
     router.get('/search-user/:searchtext', UserController.searchUser);
     router.post('/create-group', UserController.createGroup);
-    router.get('/group-list', UserController.groupList);
+    router.get('/group-list/:userId', UserController.groupList);
     router.get('/group-details/:id', UserController.groupDetails);
     router.get('/group-delete/:id', UserController.groupDelete);
     router.get('/group-member-delete/:groupId/:userId', UserController.groupMemberDelete);
@@ -28,6 +28,8 @@ router.group('/api', function (router){
     router.post('/deposit-amount', UserController.updateDepositAmount);
     router.post('/save-payment', UserController.savePayment);
     router.get('/expense-history/:groupId', UserController.expenseHistory);
+    router.get('/delete-group-expense/:paymentId', UserController.groupExpenseDelete);
+    router.post('/update-payment/:paymentId', UserController.updatePayment);
 });
 
 

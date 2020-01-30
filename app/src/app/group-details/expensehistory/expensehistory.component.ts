@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../../services/common.service';
 import { ActivatedRoute,Router } from "@angular/router";
+import { MatDialog, MatDialogConfig } from "@angular/material";
+import { DeleteconfirmComponent } from '../../deleteconfirm/deleteconfirm.component'
 
 @Component({
   selector: 'app-expensehistory',
@@ -10,10 +12,12 @@ import { ActivatedRoute,Router } from "@angular/router";
 export class ExpensehistoryComponent implements OnInit {
   groupId = '';
   groupDetails: any = [];
+  userDetails: any ='';
+  userId = '';
 
   constructor(
     private cService:CommonService, private activeRoute: ActivatedRoute, 
-    private router : Router,
+    private router : Router, private dialog : MatDialog
   ) { 
     this.activeRoute.params.subscribe((params) => {
       this.groupId = params.gid;
@@ -21,6 +25,11 @@ export class ExpensehistoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(localStorage.getItem('user')){
+      this.userDetails = JSON.parse(localStorage.getItem('user'));
+      this.userId = this.userDetails.id;
+    }
+
     this.getHistory();
   }
 
@@ -37,4 +46,22 @@ export class ExpensehistoryComponent implements OnInit {
     });
   };
 
+  deleteExpense(payId)
+  {
+  	const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    const dialogRef = this.dialog.open(DeleteconfirmComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(data => {
+      if(data['status'] == true) {
+        this.cService.deleteGroupExpense(payId).subscribe((response: any)=>{
+          if (response.status == 'success') {
+						this.getHistory();
+					}
+        })
+      }
+    });
+  };
+
+  
 }

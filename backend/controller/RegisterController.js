@@ -1,7 +1,7 @@
 const { Validator } = require('node-input-validator');
 const md5 = require('md5');
 const tokenHelper = require('../helpers/token');
-const SHA512 = require("crypto-js/sha512");
+//const SHA512 = require("crypto-js/sha512");
 const Models = require('../models');
 const User = Models.User;
 

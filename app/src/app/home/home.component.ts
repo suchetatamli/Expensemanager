@@ -20,11 +20,11 @@ export class HomeComponent implements OnInit {
     if(localStorage.getItem('user')){
       this.userDetails = JSON.parse(localStorage.getItem('user'));
     }
-    //console.log(this.userDetails);
-    this.cService.groupList().subscribe((response:any)=>{
-      this.groups = response.data.rows;
+    const userId = this.userDetails.id;
+    this.cService.groupList(userId).subscribe((response:any)=>{
+      this.groups = response.data;
       this.groups.map(async el=>{
-          el.total= await el.members.reduce((total, num) =>{
+        el.total= await el.members.reduce((total, num) =>{
           return total + num.pay;
         },0)
       })

@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
 
   /****** insert group and group member detail ******/
   Group.insertGroup = function (data){
+    //console.log(data);
     return Group.create(data,{
       include: [ {
           association: 'members',
@@ -98,7 +99,7 @@ module.exports = (sequelize, DataTypes) => {
       include:[
         { 
           association: 'pay',
-          attributes: ['payby','paydate','description','category','amount','addedby','sharewith'],
+          attributes: ['id','payby','paydate','description','category','amount','addedby','sharewith'],
           include:[
             { association:'paymentUser',attributes: ['name'],required: false },
             { association:'addedUser',attributes: ['name'],required: false },

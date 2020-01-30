@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       field: 'addedby'
     },
+    editby: {
+      type:DataTypes.INTEGER,
+      allowNull:true,
+      field: 'editby'
+    },
     sharewith: {
       type: DataTypes.STRING,
       allowNull: true,

@@ -31,6 +31,7 @@ import { PaymentComponent } from './group-details/payment/payment.component';
 import { ExpensehistoryComponent } from './group-details/expensehistory/expensehistory.component';
 import { DeleteconfirmComponent } from './deleteconfirm/deleteconfirm.component';
 import { DepositpopupComponent } from './group-details/depositpopup/depositpopup.component';
+import { PaymenteditComponent } from './group-details/paymentedit/paymentedit.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DepositpopupComponent } from './group-details/depositpopup/depositpopup
     PaymentComponent,
     ExpensehistoryComponent,
     DeleteconfirmComponent,
-    DepositpopupComponent
+    DepositpopupComponent,
+    PaymenteditComponent
   ],
   imports: [
     BrowserModule,

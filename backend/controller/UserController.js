@@ -1,11 +1,12 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const tokenHelper = require('../helpers/token');
+//const tokenHelper = require('../helpers/token');
 const Models = require('../models');
 const User = Models.User;
 const Group = Models.Group;
 const GroupMember = Models.GroupMember;
 const Payment = Models.Payment;
+const ShareMember = Models.ShareMember;
 
 const UserController = { 
     /****** Search User ******/
@@ -36,7 +37,7 @@ const UserController = {
             group_name : formData.name,
             start_date : formData.startdate,
             created_by : formData.createdBy,
-        }; console.log(insertData);
+        }; 
         Group.insertGroup(insertData).then((groupData) => {
             res.send({
                 status: 'success',
@@ -54,6 +55,7 @@ const UserController = {
 
     /*********** Group List **********/
     groupList: async(req,res) => {
+        let userId = req.params.userId;
         let formData = req.body;
         let orderByParam ='id';
         let order = 'DESC';
@@ -63,19 +65,50 @@ const UserController = {
         if(formData.order){
             order = formData.order;
         }
-        Group.listGroup(orderByParam,order).then((groupList) => {
-            res.send({
-                status: 'success',
-                code: 'UC-GL-0001',
-                data: groupList
-            });           
-        }).catch((errors) => {
-            res.send({
-                status: 'error',
-                code: 'UC-GL-0002',
-                data: 'Failed'
+        var allPromise = [];
+        GroupMember.findAndCountAll({where: {user_id:userId}, attributes:['group_id']}).then(response => {
+            response.rows.forEach((el)=>{
+                let promiseObj = Group.findOne({
+                    where: {id:el.group_id}, 
+                    attributes:['id', 'group_name','start_date'],
+                    include:[
+                        { 
+                            association: 'members',
+                            attributes: ['pay']
+                        }
+                    ]
+                });
+                allPromise.push(promiseObj);
+            });
+            Promise.all(allPromise).then((responseData)=>{
+                res.send({
+                    status: 'success',
+                    code: 'CAC-CD-0001',
+                    data:responseData
+                });
+            }).catch((errors) => {
+                res.send({
+                    status: 'error',
+                    code: 'UC-GL-0002',
+                    data: 'Failed'
+                });
             });
         });
+        
+
+        // Group.listGroup(orderByParam,order).then((groupList) => {
+        //     res.send({
+        //         status: 'success',
+        //         code: 'UC-GL-0001',
+        //         data: groupList
+        //     });           
+        // }).catch((errors) => {
+        //     res.send({
+        //         status: 'error',
+        //         code: 'UC-GL-0002',
+        //         data: 'Failed'
+        //     });
+        // });
     },
 
     /* Group details */
@@ -251,6 +284,106 @@ const UserController = {
                 status: 'error',
                 code: 'UC-EH-0002',
                 data: 'Some error occurred.'
+            });
+        });
+    },
+
+    /* delete group expense */
+    groupExpenseDelete: async(req, res) => {
+        const payId = req.params.paymentId;
+        Payment.findOne({where: {id: payId}, attributes:['sharewith','amount','group_id','payby']}).then(response => {
+            const groupId = response.group_id;
+            const amount = response.amount;
+            const totalSharePerson = response.sharewith.split(',');  //convert from string to array
+            const shareAmount = amount / totalSharePerson.length;
+            let payshare = null;
+            for(i=0;i<totalSharePerson.length; i++){
+                this.payshare = GroupMember.update({pay_share :Sequelize.literal('pay_share - '+shareAmount)}, {where: {group_id:groupId, user_id:totalSharePerson[i]}});
+            }
+            const groupmember = GroupMember.update({pay :Sequelize.literal('pay - '+amount)}, {where: {group_id:groupId, user_id:response.payby}});
+            const shareMember = ShareMember.destroy({where: {payment_id:payId}});
+            const paymentdetail = Payment.destroy({where: {id:payId}});
+
+            
+            Promise.all([payshare, groupmember, shareMember, paymentdetail]).then((deleteExpense) => {
+                res.send({
+                    status: 'success',
+                    code: 'UC-GED-0001',
+                    data: deleteExpense
+                });
+            }).catch((errors) => {
+                res.send({
+                    status: 'error',
+                    code: 'UC-GED-0002',
+                    data: 'Some error occurred when delete payment.'
+                });
+            });
+        }).catch((errors) => {
+            res.send({
+                status: 'error',
+                code: 'UC-GED-0003',
+                data: 'Some error occurred when find this payment.'
+            });
+        });
+    },
+
+    /* update payment */
+    updatePayment: async(req, res) => {
+        const payId = req.params.paymentId;
+        Payment.findOne({where: {id: payId}, attributes:['sharewith','amount','group_id','payby','addedby']}).then(response => {
+            const addedBy = response.addedby;
+            const groupId = response.group_id;
+            const amount = response.amount;
+            const totalSharePerson = response.sharewith.split(',');  //convert from string to array
+            const shareAmount = amount / totalSharePerson.length;
+            let payshare = null;
+            for(i=0;i<totalSharePerson.length; i++){
+                this.payshare = GroupMember.update({pay_share :Sequelize.literal('pay_share - '+shareAmount)}, {where: {group_id:groupId, user_id:totalSharePerson[i]}});
+            }
+            const groupmember = GroupMember.update({pay :Sequelize.literal('pay - '+amount)}, {where: {group_id:groupId, user_id:response.payby}});
+            const shareMember = ShareMember.destroy({where: {payment_id:payId}});
+            const paymentdetail = Payment.destroy({where: {id:payId}});
+
+            let formData = req.body;
+            let insertPayment = {
+                ...formData,
+                group_id : formData.groupId,
+                payby : formData.payBy,
+                paydate : formData.payDate,
+                description : formData.description,
+                category : formData.category,
+                amount : formData.amount,
+                addedby : addedBy,
+                editby  : formData.editby,
+                sharewith : formData.shareMembers.toString(),
+            };
+            const shareamount = formData.amount / formData.shareMembers.length;
+            let payshareamount = null;
+            const payment = Payment.insertPay(insertPayment);
+            for(i=0;i<formData.shareMembers.length; i++){
+                this.payshareamount = GroupMember.update({pay_share :Sequelize.literal('pay_share + '+shareamount)}, {where: {group_id:formData.groupId, user_id:formData.shareMembers[i]}});
+            }
+            const groupmemberupdate = GroupMember.update({pay :Sequelize.literal('pay + '+formData.amount)}, {where: {group_id:formData.groupId, user_id:formData.payBy}});
+            
+            
+            Promise.all([payshare, groupmember, shareMember, paymentdetail, payment, payshareamount, groupmemberupdate]).then((paymentDetail) => {
+                res.send({
+                    status: 'success',
+                    code: 'UC-UP-0001',
+                    data: paymentDetail
+                });
+            }).catch((errors) => {
+                res.send({
+                    status: 'error',
+                    code: 'UC-UP-0002',
+                    data: 'Some error occurred when update payment.'
+                });
+            });
+        }).catch((errors) => {
+            res.send({
+                status: 'error',
+                code: 'UC-UP-0003',
+                data: 'Some error occurred when find this payment.'
             });
         });
     }
