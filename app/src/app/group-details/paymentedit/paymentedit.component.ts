@@ -89,7 +89,7 @@ export class PaymenteditComponent implements OnInit {
     this.submitted = true;
 		if(this.pay.description !='' && this.pay.category != '' && this.pay.shareMembers.length >0 && this.pay.payDate !='' && this.pay.amount != '') {
       if (this.pay.payDate != '') {
-        this.pay.payDate = this.pay.payDate.toISOString();
+        this.pay.payDate = this.pay.payDate;//.toISOString();
       } else {
         delete this.pay.payDate;
       }
