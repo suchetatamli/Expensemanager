@@ -21,6 +21,7 @@ export class PaymenteditComponent implements OnInit {
     editBy : '',
     paymentId : ''
   }
+  shareUser = [];
   
   category : any = [
 		'Food',
@@ -59,7 +60,7 @@ export class PaymenteditComponent implements OnInit {
   ngOnInit() {
     this.cService.editGroupExpense(this.pay.paymentId).subscribe((response: any)=> {
       const paymentDetail = response.data;
-      if (paymentDetail && this.pay.paymentId!='') {
+      if (paymentDetail!='' && this.pay.paymentId!='') {
         this.pay.description = paymentDetail.description;
         this.pay.category = paymentDetail.category;
         this.pay.amount = paymentDetail.amount;
@@ -72,10 +73,10 @@ export class PaymenteditComponent implements OnInit {
             return i == m['id']
           });
           if (index != -1) {
-            this.pay.shareMembers.push(m);
+            this.shareUser.push(m['id']);
           }
         }
-        console.log(this.pay.shareMembers);
+        this.pay.shareMembers = this.shareUser;
       } else {
         this.pay.shareMembers = this.members;
       }
@@ -101,10 +102,10 @@ export class PaymenteditComponent implements OnInit {
           })
         });
       }
-      console.log(this.pay);
-      // this.cService.updateGroupExpense(this.pay).subscribe((response)=> {
-			// 	this.router.navigate(['/group-details/'+this.pay.groupId])
-			// })
+      // console.log(this.pay);
+      this.cService.updateGroupExpense(this.pay).subscribe((response)=> {
+				this.router.navigate(['/expense-history/'+this.pay.groupId])
+			})
 		}
   }
   
