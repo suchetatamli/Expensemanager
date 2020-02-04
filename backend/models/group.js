@@ -61,18 +61,16 @@ module.exports = (sequelize, DataTypes) => {
   },
 
   /***************** group list  ****************/
-  Group.listGroup = function(orderByParam ='id',order='DESC'){
-    return this.findAndCountAll({
+  Group.listGroup = function(groupId){
+    return this.findOne({
+      where: {id : groupId},
       attributes:['id', 'group_name','start_date'],
       include:[
         { 
           association: 'members',
           attributes: ['pay']
         },
-      ],
-      order: [
-        [orderByParam,order]
-      ],
+      ]
     });
   }
 

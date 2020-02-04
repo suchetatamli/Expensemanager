@@ -9,7 +9,12 @@
     </mat-card-header>
     <mat-card-content>
         <mat-form-field>
-            <input matInput placeholder="Name" [(ngModel)]="group.name">
+            <input matInput placeholder="Group Name" [(ngModel)]="group.name">
+            <!-- <div *ngIf="group.name.errors.required" class="help-block">
+                <mat-error *ngIf="group.name.errors.required">
+                    Group Name is <strong>required</strong>
+                </mat-error>
+            </div> -->
         </mat-form-field>
         <mat-form-field>
             <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="group.startdate" readonly>

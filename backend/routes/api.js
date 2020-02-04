@@ -29,6 +29,7 @@ router.group('/api', function (router){
     router.post('/save-payment', UserController.savePayment);
     router.get('/expense-history/:groupId', UserController.expenseHistory);
     router.get('/delete-group-expense/:paymentId', UserController.groupExpenseDelete);
+    router.get('/edit-group-expense/:paymentId', UserController.groupExpenseEdit);
     router.post('/update-payment/:paymentId', UserController.updatePayment);
 });
 

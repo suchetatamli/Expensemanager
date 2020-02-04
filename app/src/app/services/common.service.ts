@@ -52,8 +52,12 @@ export class CommonService {
   deleteGroupExpense(paymentId){
     return this.http.get(global.API_URL + '/delete-group-expense/' + paymentId);
   }
-  /* edit expense */
-  editGroupExpense(postData, paymentId){
-    return this.http.post(global.API_URL + '/update-payment/' + paymentId, postData)
+  /* edit payment */
+  editGroupExpense(paymentId){
+    return this.http.get(global.API_URL + '/edit-group-expense/' + paymentId);
+  }
+  /* update expense */
+  updateGroupExpense(postData){
+    return this.http.post(global.API_URL + '/update-payment/' + postData.paymentId, postData)
   }
 }

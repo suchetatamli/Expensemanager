@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { AdditemComponent } from './additem/additem.component';
 import { Router} from "@angular/router";
@@ -39,6 +39,18 @@ export class CreateGroupComponent implements OnInit {
 		if (!localStorage.getItem('_token')) {
 			this.router.navigate(['/']);
 		}
+
+		// this.group = this.formBuilder.group({
+		// 	name: ['', Validators.required]
+		//   });
+
+		// this.group = new FormGroup({
+		// 	'groupname': new FormControl(this.group.name, [
+		// 	  Validators.required 
+		// 	]),
+		// 	// 'alterEgo': new FormControl(this.hero.alterEgo),
+		// 	// 'power': new FormControl(this.hero.power, Validators.required)
+		// });
   	}
 
   	openDialog(): void {

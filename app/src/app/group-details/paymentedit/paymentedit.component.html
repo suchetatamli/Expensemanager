@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
-        <a routerLink="" mat-mini-fab color="primary">&#10094;</a><span style="margin-left: 10px;">Edit Expense</span>
+        <a routerLink="/expense-history/{{pay.groupId}}" mat-mini-fab color="primary">&#10094;</a><span style="margin-left: 10px;">Edit Expense</span>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="bottom-container">
@@ -51,6 +51,6 @@
         <input type="number" matInput placeholder="Amount" [(ngModel)]="pay.amount">
       </mat-form-field>
     </mat-card-content>
-    <button mat-flat-button color="primary" >Pay</button>
+    <button mat-flat-button color="primary" (click)="payUpdate()">Pay</button>
   </mat-card>
 </div>

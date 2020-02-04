@@ -56,28 +56,22 @@ const UserController = {
     /*********** Group List **********/
     groupList: async(req,res) => {
         let userId = req.params.userId;
-        let formData = req.body;
-        let orderByParam ='id';
+        let orderByParam ='group_id';
         let order = 'DESC';
-        if(formData.orderByParam){
-            orderByParam = formData.orderByParam;
-        }
-        if(formData.order){
-            order = formData.order;
-        }
+        
         var allPromise = [];
-        GroupMember.findAndCountAll({where: {user_id:userId}, attributes:['group_id']}).then(response => {
+        GroupMember.findAndCountAll({where: {user_id:userId}, attributes:['group_id'],order:[[orderByParam,order]]}).then(response => {
             response.rows.forEach((el)=>{
-                let promiseObj = Group.findOne({
-                    where: {id:el.group_id}, 
-                    attributes:['id', 'group_name','start_date'],
-                    include:[
-                        { 
-                            association: 'members',
-                            attributes: ['pay']
-                        }
-                    ]
-                });
+                let promiseObj = Group.listGroup(el.group_id);
+
+                // let promiseObj = new Promise((resolve, reject)=>{
+                //     Group.listGroup(el.group_id).then((groupDetail)=>{
+                //         resolve({
+                //             groupData:groupDetail
+                //         });
+                //     })
+                // });
+
                 allPromise.push(promiseObj);
             });
             Promise.all(allPromise).then((responseData)=>{
@@ -94,21 +88,6 @@ const UserController = {
                 });
             });
         });
-        
-
-        // Group.listGroup(orderByParam,order).then((groupList) => {
-        //     res.send({
-        //         status: 'success',
-        //         code: 'UC-GL-0001',
-        //         data: groupList
-        //     });           
-        // }).catch((errors) => {
-        //     res.send({
-        //         status: 'error',
-        //         code: 'UC-GL-0002',
-        //         data: 'Failed'
-        //     });
-        // });
     },
 
     /* Group details */
@@ -327,6 +306,24 @@ const UserController = {
         });
     },
 
+    /* edit payment */
+    groupExpenseEdit: async(req, res) => {
+        const paymentId = req.params.paymentId;
+        Payment.paymentDetail(paymentId).then(response => {
+            res.send({
+                status: 'success',
+                code: 'UC-0003',
+                data: response
+            });
+        }).catch((errors) => {
+            res.send({
+                status: 'error',
+                code: 'UC-GED-0003',
+                data: 'Some error occurred when find this payment.'
+            });
+        });
+    },
+
     /* update payment */
     updatePayment: async(req, res) => {
         const payId = req.params.paymentId;
@@ -354,7 +351,7 @@ const UserController = {
                 category : formData.category,
                 amount : formData.amount,
                 addedby : addedBy,
-                editby  : formData.editby,
+                editby  : formData.editBy,
                 sharewith : formData.shareMembers.toString(),
             };
             const shareamount = formData.amount / formData.shareMembers.length;

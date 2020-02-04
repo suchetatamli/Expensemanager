@@ -85,6 +85,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       ]
     });
+  };
+
+  /********* payment detail *********/
+  Payment.paymentDetail = function(paymentId){
+    return this.findOne({
+      where : {id : paymentId},
+      attributes:['description','category','sharewith','amount','payby','paydate']
+    });
   }
 
   return Payment;
