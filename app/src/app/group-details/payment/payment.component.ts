@@ -15,6 +15,7 @@ export class PaymentComponent implements OnInit {
     category : '',
     shareMembers : [],
     shareUsers : [],
+    shareWith : [],
     payDate : new Date(),
     payBy : '',
     amount : '',
@@ -57,17 +58,17 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit() {
   }
+  
+  selectStatus : number =  1;
+	selectAll(select: NgModel, values: any) {
+		select.update.emit(values); 	
+		this.selectStatus = 1;	    
+	}
 
-  // selectStatus : number =  1;
-	// selectAll(select: NgModel, values: any) {
-	// 	select.update.emit(values); 	
-	// 	this.selectStatus = 1;	    
-	// }
-
-	// deselectAll(select: NgModel) {
-	// 	select.update.emit([]); 
-	// 	this.selectStatus = 0;  
-  // }
+	deselectAll(select: NgModel) {
+		select.update.emit([]); 
+		this.selectStatus = 0;  
+  }
   
   submitted : boolean = false;
 	paySubmit()
@@ -84,11 +85,12 @@ export class PaymentComponent implements OnInit {
         let members = this.pay.shareMembers;
         members.forEach((el)=>{
           this.pay.shareUsers.push({
-            'user_id' : el,
+            'user_id' : el.id,
           })
+          this.pay.shareWith.push(el.id);
         });
       }
-      //console.log(this.pay);
+      // console.log(this.pay);
       this.cService.savePay(this.pay).subscribe((response)=> {
 				this.router.navigate(['/group-details/'+this.pay.groupId])
 			})

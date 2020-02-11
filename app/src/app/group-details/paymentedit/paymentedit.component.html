@@ -21,14 +21,11 @@
         <h4>Expense Share With</h4>
         <mat-form-field>
           <mat-label>Share With</mat-label>
-          <mat-select multiple [(ngModel)]="pay.shareMembers">
-            <!-- <button mat-button (click)="selectAll(memberSelect, members)">
-              Select All
-            </button>
-            <button mat-button (click)="deselectAll(memberSelect)">
-              Deselect All
-            </button> -->
-            <mat-option *ngFor="let m of members" [value]="m.id">
+          <mat-select multiple [(ngModel)]="pay.shareMembers" #memberSelect="ngModel">
+            <button mat-button (click)="selectAll(memberSelect, members)"> Select All</button>
+            <button mat-button (click)="deselectAll(memberSelect)">Deselect All</button>
+
+            <mat-option *ngFor="let m of members" [value]="m">
               {{m.name}}
             </mat-option>
           </mat-select>

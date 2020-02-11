@@ -15,6 +15,7 @@ export class PaymenteditComponent implements OnInit {
     category : '',
     shareMembers : [],
     shareUsers : [],
+    shareWith : [],
     payDate : new Date(),
     payBy : '',
     amount : '',
@@ -73,7 +74,7 @@ export class PaymenteditComponent implements OnInit {
             return i == m['id']
           });
           if (index != -1) {
-            this.shareUser.push(m['id']);
+            this.shareUser.push(m);
           }
         }
         this.pay.shareMembers = this.shareUser;
@@ -81,6 +82,17 @@ export class PaymenteditComponent implements OnInit {
         this.pay.shareMembers = this.members;
       }
     });
+  }
+
+  selectStatus : number =  1;
+	selectAll(select: NgModel, values: any) {
+		select.update.emit(values); 	
+		this.selectStatus = 1;	    
+	}
+
+	deselectAll(select: NgModel) {
+		select.update.emit([]); 
+		this.selectStatus = 0;  
   }
 
   submitted : boolean = false;
@@ -98,8 +110,9 @@ export class PaymenteditComponent implements OnInit {
         let members = this.pay.shareMembers;
         members.forEach((el)=>{
           this.pay.shareUsers.push({
-            'user_id' : el,
+            'user_id' : el.id,
           })
+          this.pay.shareWith.push(el.id);
         });
       }
       // console.log(this.pay);

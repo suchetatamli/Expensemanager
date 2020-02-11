@@ -221,13 +221,14 @@ const UserController = {
             category : formData.category,
             amount : formData.amount,
             addedby : formData.addedBy,
-            sharewith : formData.shareMembers.toString(),
+            sharewith : formData.shareWith.toString(),
         };
-        const shareAmount = formData.amount / formData.shareMembers.length;
+        // console.log(insertPayment);
+        const shareAmount = formData.amount / formData.shareWith.length;
         let payshare = null;
         const payment = Payment.insertPay(insertPayment);
-        for(i=0;i<formData.shareMembers.length; i++){
-            this.payshare = GroupMember.update({pay_share :Sequelize.literal('pay_share + '+shareAmount)}, {where: {group_id:formData.groupId, user_id:formData.shareMembers[i]}});
+        for(i=0;i<formData.shareWith.length; i++){
+            this.payshare = GroupMember.update({pay_share :Sequelize.literal('pay_share + '+shareAmount)}, {where: {group_id:formData.groupId, user_id:formData.shareWith[i]}});
         }
         const groupmember = GroupMember.update({pay :Sequelize.literal('pay + '+formData.amount)}, {where: {group_id:formData.groupId, user_id:formData.payBy}});
         
@@ -239,7 +240,7 @@ const UserController = {
                 data: response
             });
         }).catch((errors) => {
-            console.log(errors);
+            // console.log(errors);
             res.send({
                 status: 'error',
                 code: 'UC-SP-0002',
@@ -258,7 +259,7 @@ const UserController = {
                 data: groupExpenseDetails
             });           
         }).catch((errors) => {
-            console.log(errors);
+            // console.log(errors);
             res.send({
                 status: 'error',
                 code: 'UC-EH-0002',
@@ -352,13 +353,13 @@ const UserController = {
                 amount : formData.amount,
                 addedby : addedBy,
                 editby  : formData.editBy,
-                sharewith : formData.shareMembers.toString(),
+                sharewith : formData.shareWith.toString(),
             };
-            const shareamount = formData.amount / formData.shareMembers.length;
+            const shareamount = formData.amount / formData.shareWith.length;
             let payshareamount = null;
             const payment = Payment.insertPay(insertPayment);
-            for(i=0;i<formData.shareMembers.length; i++){
-                this.payshareamount = GroupMember.update({pay_share :Sequelize.literal('pay_share + '+shareamount)}, {where: {group_id:formData.groupId, user_id:formData.shareMembers[i]}});
+            for(i=0;i<formData.shareWith.length; i++){
+                this.payshareamount = GroupMember.update({pay_share :Sequelize.literal('pay_share + '+shareamount)}, {where: {group_id:formData.groupId, user_id:formData.shareWith[i]}});
             }
             const groupmemberupdate = GroupMember.update({pay :Sequelize.literal('pay + '+formData.amount)}, {where: {group_id:formData.groupId, user_id:formData.payBy}});
             
